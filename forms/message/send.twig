@@ -1,0 +1,21 @@
+<form id="message" action="{% url "message" %}" method="post" accept-charset="utf-8">
+    <h3 class="contact">${ "Contact" | translate }</h3>
+    <p>
+        <label for="name">${ "Your Name" | translate }</label>
+        <input type="text" name="name" value="{% if (formData) %}$formData.name{% endif %}" data-rule-required="true" id="name" />
+        {% if (formData.error | contains('name')) %}<span class="help-block has-error" for="name">${ "This field is required." | translate }</span>{% endif %}
+    </p>
+    <p>
+        <label for="email">${ "Your E-Mail" | translate }</label>
+        <input type="text" name="email" value="{% if (formData) %}$formData.email{% endif %}" data-rule-email="true" data-rule-required="true" id="email" />
+        {% if (formData.error | contains('email')) %}<span class="help-block has-error" for="email">${ "This field is required." | translate }</span>{% endif %}
+    </p>
+    <p>
+        <textarea name="message" data-rule-required="true" rows="8" cols="40" class="wide">{% if (formData) %}$formData.message{% endif %}</textarea>
+        {% if (formData.error | contains('message')) %}<span class="help-block has-error" for="message">${ "This field is required." | translate }</span>{% endif %}
+    </p>
+    <br />
+    <p>
+        <button type="submit">${ "Speak" | translate }</button>
+    </p>
+</form>

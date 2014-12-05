@@ -1,0 +1,37 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Messages Settings" | translate("messages") }{% endblock %}
+
+{% block content %}
+            <form id="messages_settings" class="split" action="{% admin "messages_settings" %}" method="post">
+                <fieldset>
+                    <p>
+                        <label for="recipient_mail">${ "Recipient E-Mail Address" | translate("messages") }</label>
+                        <input class="text" type="text" name="recipient_mail" value="${ site.recipient_mail | escape }" id="recipient_mail" />
+                    </p>
+                    <p>
+                        <label for="enable_spam_security">${ "Enable spam security" | translate("messages") }</label>
+                        <input type="checkbox" class="checkbox" name="enable_spam_security"${ site.enable_spam_security | checked } /> ${ "enabled" | translate("messages") }
+                        <small>${ "Enables a simple method for blocking more than <strong>[Message-Count]</strong> messages for one IP within <strong>[Check-Timespan]</strong> minutes." | translate("messages") }</small>
+                    </p>
+                    <p>
+                        <label for="spam_security_count">${ "Spam security: Message-Count" | translate("messages") }</label>
+                        <input class="text" type="text" name="spam_security_count" value="${ site.spam_security_count | escape }" id="spam_security_count" />
+                    </p>
+                    <p>
+                        <label for="spam_security_timespan">${ "Spam security: Check-Timespan" | translate("messages") }</label>
+                        <input class="text" type="text" name="spam_security_timespan" value="${ site.spam_security_timespan | escape }" id="spam_security_timespan" />
+                    </p>
+                    <p>
+                        <label for="ip_blacklist">${ "IP Blacklist" | translate("messages") }</label>
+                        <input class="text" type="text" name="ip_blacklist" value="${ site.ip_blacklist | escape }" id="ip_blacklist" />
+                        <small>${ "Comma-separated list of blacklisted IP Addresses." | translate("messages") }</small>
+                    </p>
+                    <p class="buttons">
+                        <button type="submit" class="yay"><img src="$theme_url/images/icons/success.svg" alt="success" />${ "Update" | translate }</button>
+                    </p>
+
+                    <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                </fieldset>
+            </form>
+{% endblock %}

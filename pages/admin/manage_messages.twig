@@ -1,0 +1,77 @@
+{% extends "layout.twig" %}
+
+{% block title %}${ "Manage Messages" | translate("messages") }{% endblock %}
+
+{% block content %}
+            <h2>${ "Need more detail?" | translate }</h2>
+            <form class="detail" action="index.php" method="get" accept-charset="utf-8">
+                <fieldset>
+                    <input type="hidden" name="action" value="manage_messages" />
+                    <div class="left pad">
+                        <h3>
+                            ${ "Search&hellip;" | translate }
+                            <a href="{% admin "help&id=filtering_results" %}" class="help emblem"><img src="$theme_url/images/icons/help.svg" alt="help" onerror="this.removeAttribute('onerror'); this.src='$theme_url/images/icons/help.svg'" /></a>
+                        </h3>
+                        <input class="text" type="text" name="query" value="${ GET.query | escape }" id="query" />
+                        <button type="submit" class="inline">${ "Search &rarr;" | translate }</button>
+                    </div>
+                    <div class="clear"></div>
+                </fieldset>
+            </form>
+            <br />
+            <form action="{% admin "bulk_messages" %}" method="post">
+                <h2>{% if GET.query %}${ "Search Results" | translate }{% else %}${ "Last 25 Messages" | translate("messages") }{% endif %}</h2>
+                <table border="0" cellspacing="0" cellpadding="0" class="wide">
+                    <thead>
+                        <tr class="head">
+                            <th class="toggler center"></th>
+                            <th>${ "Author" | translate("messages") }</th>
+                            <th>${ "E-Mail" | translate("messages") }</th>
+                            <th>${ "Sent" | translate("messages") }</th>
+                            ${ trigger.call("manage_messages_column_header") }
+                            <th>${ "Controls" | translate }</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in messages.paginated %}
+                        <tr id="message_$message.id" class="message {% if loop.last %} last{% endif %}">
+                            <td rowspan="2" class="checkbox center">
+                                <input type="checkbox" name="message[$message.id]" value="" id="message_checkbox_$message.id" />
+                            </td>
+                            <td>$message.author</td>
+							<td>$message.author_email</td>
+                            <td>${ message.created_at | strftime }</td>
+                            ${ trigger.call("manage_messages_column", message) }
+                            {% if message.deletable %}
+                            <td class="controls">${ message.delete_link('<img src="'~ theme_url ~'/images/icons/delete.svg" alt="delete" /> '~("delete" | translate)) }</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="excerpt">
+                            <td colspan="5">${ message.body | truncate(100) }</td>
+                        </tr>
+                        {% else %}
+                        <tr class="last">
+                            <td colspan="6" class="center"><span class="sub">${ "(none)" | translate }</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if visitor.group.can("delete_message") %}
+                <br />
+                <div class="controls">
+                    <h4>${ "With selected:" | translate("messages") }</h4>
+                    <button class="lite boo" name="delete">
+                        <img src="$theme_url/images/icons/delete.svg" alt="delete" /> ${ "delete" | translate("messages") }
+                    </button>
+                </div>
+                {% endif %}
+            </form>
+            {% if messages.paginated and messages.pages > 1 %}
+            <br />
+            <div class="pagination">
+                $messages.next_link
+                $messages.prev_link
+                <span class="pages">${ "Page %d of %d" | translate | format(messages.page, messages.pages) }</span>
+            </div>
+            {% endif %}
+{% endblock %}
