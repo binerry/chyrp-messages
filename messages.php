@@ -257,6 +257,6 @@
         }
         
         public function insert_message_form($text) {
-            return str_replace('[message-form]', $this->get_message_form(), $text);
+            return str_replace('<!--message-form-->', $this->get_message_form(), $text);
         }
     }

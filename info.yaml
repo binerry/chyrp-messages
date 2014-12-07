@@ -1,7 +1,7 @@
 name: Messages
 url: https://github.com/binerry
 version: 1.0
-description: Adds a message-form to a page by simply inserting a [message-form]-placeholder.
+description: Adds a message-form to a page by simply inserting a <!--message-form--> placeholder.
 author:
   name: binerry
   url: https://github.com/binerry
